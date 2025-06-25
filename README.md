@@ -30,7 +30,6 @@ A comprehensive web-based Task Management System built with PHP, MySQL, HTML, CS
 5. Access the application through your web browser
 6. Default Admin Credentials:
    - Email: admin@taskease.com
-   - Password: admin123
 
 ## Directory Structure
 
