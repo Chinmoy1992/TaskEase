@@ -1,0 +1,15 @@
+# Basic security headers
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Enable rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /taskease/
+</IfModule>
+
+# PHP settings
+php_value display_errors On
+php_value error_reporting E_ALL 

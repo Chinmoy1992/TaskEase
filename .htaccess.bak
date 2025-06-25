@@ -1,0 +1,54 @@
+# Disable directory listing
+Options -Indexes
+
+# Protect against XSS, clickjacking and other vulnerabilities
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "DENY"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Protect sensitive files
+<FilesMatch "^(\.htaccess|\.htpasswd|\.git|\.env|config\.php|database\.php)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Force HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# PHP error handling
+php_flag display_errors off
+php_value error_reporting 0
+
+# Prevent access to dot files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Limit file upload size
+php_value upload_max_filesize 5M
+php_value post_max_size 6M
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# Prevent script execution in uploads directory
+<Directory "uploads">
+    Options -ExecCGI
+    RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8
+    RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8
+    php_flag engine off
+</Directory>
+
+# Block access to backup and source files
+<FilesMatch "\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist|old|myd|frm|ini|config|example|defaults)$">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</FilesMatch> 
